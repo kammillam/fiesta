@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 def BoW (document = None, file = None, indexOfDocument = None, vocabulary = False):
    
     vectorizer = CountVectorizer()
+
     corpus = []
     if file != None :    
         file = open(file, "r")
@@ -14,10 +15,20 @@ def BoW (document = None, file = None, indexOfDocument = None, vocabulary = Fals
         corpus += document
     
     termDocumentMatrix = vectorizer.fit_transform(corpus).toarray()
-    
-    if indexOfDocument != None :
+    vocabulary = vectorizer.vocabulary_ 
+
+    if vocabulary == True:
+        index_vocabulary = {}
+        vocabulary_sorted = sorted(vocabulary.keys())
+        for word in vocabulary_sorted:
+            index_vocabulary[word] = vocabulary.get(word)
+        return index_vocabulary
+    elif indexOfDocument != None :
         return termDocumentMatrix[indexOfDocument]
-    else : 
+    else: 
         return termDocumentMatrix
+
     
         
+
+     
