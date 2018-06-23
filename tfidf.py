@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import TfidfTransformer
-from fiesta.BagOfWords import BoW
+from fiesta.bag_of_words import BoW
 
 
 def tf (file = None, document = None, indexOfDocument = None, scaled = False): 
