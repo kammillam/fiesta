@@ -1,68 +1,68 @@
 # fiesta
-Documentation 
+##Documentation 
 
-fiesta.BagOfWords
-fiesta.bag_of_words.bag_of_words (document = None, file = None, indexOfDocument = None) 
+####fiesta.BagOfWords
+*_fiesta.bag_of_words.bag_of_words (document = None, file = None, indexOfDocument = None)_
 	
-		Parameters: document():
+		__Parameters:__ document():
 				file():
 				indexOfDocument(int): 
 
-		Returns: vector representation for all documents or vector representation for selected document
-		Return type: numpy.ndarray
+		__Returns:__ vector representation for all documents or vector representation for selected document
+		__Return type:__ numpy.ndarray
 
-fiesta.bag_of_words.bag_of_words_vocabulary (document = None, file = None):
+*_fiesta.bag_of_words.bag_of_words_vocabulary (document = None, file = None)_
 	
-		Parameters: document():
+		__Parameters:__ document():
 				file():
 
-		Returns: an assignment of terms to characteristic indexes in form [word : index] 
-		Return type: dict
+		__Returns:__ an assignment of terms to characteristic indexes in form [word : index] 
+		__Return type:__ dict
 
-fiesta.tfidf
-fiesta.tfidf.tf (file = None, document = None, indexOfDocument = None, 
-						scaled = False)
-		Parameters: file():
+####fiesta.tfidf
+*_fiesta.tfidf.tf (file = None, document = None, indexOfDocument = None,_ 
+						_scaled = False)_
+		__Parameters:__ file():
 				document():
 				indexOfDocument():
 				scaled(bool):
 
-		Returns: document-term array with the number of term in each document 
-		Return type: numpy.ndarray
+		__Returns:__ document-term array with the number of term in each document 
+		__Return type:__ numpy.ndarray
 
-fiesta.tfidf.idf (file = None, document = None, smooth = True)
-		Parameters: file():
+*_fiesta.tfidf.idf (file = None, document = None, smooth = True)_
+		__Parameters:__ file():
 				document():
 				smooth(bool):
 
-		Returns: list with idf weight for euch term
-		Return type: numpy.ndarray
+		__Returns:__ list with idf weight for euch term
+		__Return type:__ numpy.ndarray
 
 
-tiesta.tfidf.tfidf (file = None, document = None, smooth = True,
- indexOfDocument =None)
-		Parameters: file():
+*_tiesta.tfidf.tfidf (file = None, document = None, smooth = True,_
+ _indexOfDocument =None)_
+		__Parameters:__ file():
 				document():
 				smooth(bool):
 				indexOfDocument(int):
-		Returns: document-term array with tfidf weight for term in each document 
-		Return type: numpy.ndarray
+		__Returns:__ document-term array with tfidf weight for term in each document 
+		__Return type:__ numpy.ndarray
 
 
-fiesta.similarity_coefficients
+####fiesta.similarity_coefficients
 
-	fiesta.similarity_coefficients.jaccard_similarity_coefficient ( document1,           document2, normalize =True)
+	*_fiesta.similarity_coefficients.jaccard_similarity_coefficient ( document1, document2, normalize =True)_
 		
-		Parameters: document1(str or list):
+		__Parameters:__ document1(str or list):
 				document2(str or list):
 				normalize(bool):
-		Returns: Jaccard similarity coefficient
-		Return type: numpy.float64
+		__Returns:__ Jaccard similarity coefficient
+		__Return type:__ numpy.float64
 
-		fiesta.similarity_coefficients.cosine_coefficient(document1, document2)
+	*_fiesta.similarity_coefficients.cosine_coefficient(document1, document2)_
 		
-		Parameters: document1(str or list):
+		__Parameters:__ document1(str or list):
 				document2(str or list):
 
-		Returns: cosine similarity coefficient
-		Return type: numpy.float64
+		__Returns:__ cosine similarity coefficient
+		__Return type:__ numpy.float64
