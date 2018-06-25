@@ -1,7 +1,7 @@
 # fiesta
-##Documentation 
+## Documentation 
 
-####fiesta.BagOfWords
+#### fiesta.BagOfWords
 *_fiesta.bag_of_words.bag_of_words (document = None, file = None, indexOfDocument = None)_
 	
 		__Parameters:__ document():
