@@ -1,7 +1,7 @@
 # fiesta
 ## Documentation 
 
-### fiesta.BagOfWords   
+### fiesta.bag_of_words    
 
 * _fiesta.bag_of_words.bag_of_words (document = None, file = None, indexOfDocument = None)_
 	
@@ -42,7 +42,7 @@
 
 
 * _tiesta.tfidf.tfidf (file = None, document = None, smooth = True,_
- _indexOfDocument =None)_
+ _indexOfDocument =None)_    
 		__Parameters:__ file():
 				document():
 				smooth(bool):
