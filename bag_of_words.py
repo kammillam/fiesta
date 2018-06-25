@@ -1,33 +1,47 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
-def BoW (document = None, file = None, indexOfDocument = None, vocabulary = False):
+def bag_of_words ( document = None, file = None, indexOfDocument = None):
    
     vectorizer = CountVectorizer()
 
-    corpus = []
+    full_document = []
     if file != None :    
         file = open(file, "r")
         for line in file:
-            corpus.append(line)
+            full_document.append(line)
         file.close()  
     
     if document != None:
-        corpus += document
+        full_document += document
     
-    termDocumentMatrix = vectorizer.fit_transform(corpus).toarray()
-    vocabulary = vectorizer.vocabulary_ 
+    termDocumentMatrix = vectorizer.fit_transform(full_document).toarray()
 
-    if vocabulary == True:
-        index_vocabulary = {}
-        vocabulary_sorted = sorted(vocabulary.keys())
-        for word in vocabulary_sorted:
-            index_vocabulary[word] = vocabulary.get(word)
-        return index_vocabulary
-    elif indexOfDocument != None :
+    if indexOfDocument != None :
         return termDocumentMatrix[indexOfDocument]
     else: 
         return termDocumentMatrix
+    
+def bag_of_words_vocabulary(document = None, file = None):
 
+    vectorizer = CountVectorizer()
+    full_document = []
+    if file != None :    
+        file = open(file, "r")
+        for line in file:
+            full_document.append(line)
+        file.close()  
+    
+    if document != None:
+        full_document += document
+    
+    vectorizer.fit_transform(full_document).toarray()
+    vocabulary = vectorizer.vocabulary_ 
+
+    index_vocabulary = {}
+    vocabulary_sorted = sorted(vocabulary.keys())
+    for word in vocabulary_sorted:
+        index_vocabulary[word] = vocabulary.get(word)
+    return index_vocabulary
     
         
 
