@@ -2,16 +2,17 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from fiesta.bag_of_words import bag_of_words
 
 
-def tf (file = None, document = None, indexOfDocument = None, scaled = False): 
-    
-    termFrequency = bag_of_words (file = file, document=document, indexOfDocument=indexOfDocument)    
+def tf (document, indexOfDocument = None, scaled = False): 
+    """This is docstring"""   
+    termFrequency = bag_of_words ( document, indexOfDocument=indexOfDocument)    
     if scaled == True:
         termFrequency = scale (termFrequency)
          
     return termFrequency
 
-def idf (file = None, document = None, smooth = True):
-    termFrequency = tf (file = file, document = document)
+def idf ( document , smooth = True):
+    """This is docstring"""   
+    termFrequency = tf (document )
     transformer = TfidfTransformer(smooth_idf=smooth)
     
     transformer.fit_transform(termFrequency).toarray()
@@ -19,8 +20,9 @@ def idf (file = None, document = None, smooth = True):
     return transformer.idf_
 
     
-def tfidf (file = None, document = None, smooth = True, indexOfDocument = None):
-    termFrequency = tf (file = file, document = document)
+def tfidf ( document, smooth = True, indexOfDocument = None):
+    """This is docstring"""   
+    termFrequency = tf ( document)
     if smooth == False:
         transformer = TfidfTransformer(smooth_idf=False)
     
@@ -36,7 +38,7 @@ def tfidf (file = None, document = None, smooth = True, indexOfDocument = None):
         return tfidf
     
 def scale ( termFrequency  ) :
-
+    """This is docstring"""   
     if len(termFrequency) == 1:
         scaledTermFrequency = termFrequency / max (termFrequency)
         return scaledTermFrequency

@@ -1,19 +1,24 @@
 from sklearn.feature_extraction.text import CountVectorizer
+from os.path import isfile
 
-def bag_of_words ( document = None, file = None, indexOfDocument = None):
-   
+def bag_of_words ( document, indexOfDocument = None, separate = None):
+    """This is docstring"""   
+    
     vectorizer = CountVectorizer()
-
     full_document = []
-    if file != None :    
-        file = open(file, "r")
-        for line in file:
+    
+    if  type(document) == list:
+        full_document = document
+    
+    elif isfile(document):    
+        document = open(document, "r")
+        for line in document:
             full_document.append(line)
-        file.close()  
-    
-    if document != None:
-        full_document += document
-    
+        document.close()  
+
+    elif type(document) == str:
+        full_document.append(document)
+
     termDocumentMatrix = vectorizer.fit_transform(full_document).toarray()
 
     if indexOfDocument != None :
@@ -21,18 +26,23 @@ def bag_of_words ( document = None, file = None, indexOfDocument = None):
     else: 
         return termDocumentMatrix
     
-def bag_of_words_vocabulary(document = None, file = None):
+def bag_of_words_vocabulary(document):
+    """This is docstring"""
 
     vectorizer = CountVectorizer()
     full_document = []
-    if file != None :    
-        file = open(file, "r")
-        for line in file:
-            full_document.append(line)
-        file.close()  
     
-    if document != None:
-        full_document += document
+    if type(document) == list:
+        full_document = document        
+
+    elif isfile(document) :    
+        document = open(document, "r")
+        for line in document:
+            full_document.append(line)
+        document.close()  
+    
+    elif type(document) == str:
+        full_document.append(document)
     
     vectorizer.fit_transform(full_document).toarray()
     vocabulary = vectorizer.vocabulary_ 
