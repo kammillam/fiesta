@@ -71,7 +71,7 @@
 
 ### fiesta.similarity_measure
 
-* _fiesta.similarity_coefficients.simple_matching_coefficient( document1, document2)_
+* _fiesta.similarity_measure.simple_matching_coefficient( document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory ):
 				document2(str or list of strings or file directory):
@@ -79,7 +79,7 @@
 		Returns:
 		Return type:
 
-* _fiesta.similarity_coefficients.jaccard_similarity_coefficient ( document1, document2, normalize =True)_
+* _fiesta.similarity_measure.jaccard_similarity_coefficient ( document1, document2, normalize =True)_
 		
 		Parameters: document1(str or list of strings or file directory):
 				document2(str or list of strings or file directory):
@@ -88,7 +88,7 @@
 		Returns: Jaccard similarity coefficient between document1 and document2
 		Return type: numpy.float64
 
-* _fiesta.similarity_coefficients.cosine_coefficient(document1, document2)_
+* _fiesta.similarity_measure.cosine_coefficient(document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory):
 			document2(str or list of strings or file directory):
@@ -96,7 +96,7 @@
 		Returns: cosine similarity coefficient between document1 and document2
 		Return type: numpy.float64
 
-* _fiesta.similarity_coefficients.dice_coefficient(document1, document2)_
+* _fiesta.similarity_measure.dice_coefficient(document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory):
 			document2(str or list of strings or file directory):
@@ -104,7 +104,7 @@
 		Returns:
 		Return type:
 
-* _fiesta.similarity_coefficients.overlap_coefficient(document1, document2)_
+* _fiesta.similarity_measure.overlap_coefficient(document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory):
 			document2(str or list of strings or file directory):
@@ -112,7 +112,7 @@
 		Returns:
 		Return type:
 
-* _fiesta.similarity_coefficients.summary_similarity_measures(document1, document2)_
+* _fiesta.similarity_measure.summary_similarity_measures(document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory):
 			document2(str or list of strings or file directory):
@@ -121,7 +121,7 @@
 		Return type:
 
 
-* _fiesta.similarity_coefficients.document_concatenation(document1, document2)_
+* _fiesta.similarity_measure.document_concatenation(document1, document2)_
 		
 		Parameters: document1(str or list of strings or file directory):
 			document2(str or list of strings or file directory):
@@ -129,7 +129,7 @@
 		Returns:
 		Return type:
 
-* _fiesta.similarity_coefficients.document_transformer(document)_
+* _fiesta.similarity_measure.document_transformer(document)_
 		
 		Parameters: document1(str or list of strings or file directory):
 				
