@@ -10,23 +10,20 @@ from fiesta.germalemma import GermaLemma
 
 def stop_words (document, english = False, user_definded_stop_word_list = None):
     """This is docstring"""   
-    
+
     if user_definded_stop_word_list != None:
         stop_word_list = user_definded_stop_word_list
     elif english == True:
-        stop_word_list = set (stopwords.words ('english'))    
+        stop_word_list = set (stopwords.words ('english'))     #englische vordefinierte Stopwörter 
     else:
-        stop_word_list = set (stopwords.words ('german'))
-
-    vectorizer = CountVectorizer()
-    tokens = vectorizer.build_analyzer()
+        stop_word_list = set (stopwords.words ('german'))     #deutsche vordefinierte Stopwörter
 
     if type(document) == list:
 
         documents_without_stopwords = []
 
         for document_part in document:
-            document_tokens = tokens(document_part)
+            document_tokens = word_tokenize(document_part)
             document_without_stopwords = ""
             for word in document_tokens:
                 if word not in stop_word_list :
@@ -44,7 +41,7 @@ def stop_words (document, english = False, user_definded_stop_word_list = None):
         documents_without_stopwords = []
 
         for document_part in full_document:
-            document_tokens = tokens(document_part)
+            document_tokens = word_tokenize(document_part)
             document_without_stopwords = ""
             for word in document_tokens:
                 if word not in stop_word_list :
@@ -54,11 +51,13 @@ def stop_words (document, english = False, user_definded_stop_word_list = None):
         return documents_without_stopwords    
 
     elif type(document) == str:
-        document_tokens = tokens(document)
+
+        document_tokens = word_tokenize(document)
         document_without_stopwords = ""
         for word in document_tokens:
             if word not in stop_word_list :
                 document_without_stopwords = document_without_stopwords + " " + word
+                
         return document_without_stopwords.strip()
 
 
@@ -92,19 +91,22 @@ def pos_tagging(document, english = False):
 def lemmatizer (document, english = False):
     transformed_document = lemmatizer_document_transformer (document) #aus einem File/List/String wird List mit Strings gemacht 
     total_lemmatized_document = [] #neuer List mit lemmatizierten Dokumenten
+    
     if english: #für englisch
         wnl = WordNetLemmatizer()
         for document in transformed_document: # jedes Dokument ...
             document_tokens = document.split() # ...auf Wörter verteilen 
             lemmatized_document_part = "" #neuen lemmatizierter Dokument 
             for word in document_tokens: 
-                if pos_tag(word_tokenize(word))[0][1] in ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']:
+                
+                if pos_tag(word_tokenize(word))[0][1][1] in ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']:
                     lemmatized_document_part = lemmatized_document_part + " " + wnl.lemmatize(word, pos = "v") 
-                elif pos_tag(word_tokenize(word))[0][1] in ['JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS']:
+                elif pos_tag(word_tokenize(word))[0][1][1] in ['JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS']:
                     lemmatized_document_part = lemmatized_document_part + " " + wnl.lemmatize(word, pos = "a")         
                 else:         
                     lemmatized_document_part = lemmatized_document_part + " " + wnl.lemmatize(word)             
             total_lemmatized_document.append(lemmatized_document_part.strip())
+        return total_lemmatized_document
 
     else:   #für deutsch
         lem = GermaLemma ()
@@ -112,13 +114,14 @@ def lemmatizer (document, english = False):
             document_tokens = document.split()
             lemmatized_document_part = ""
             for word in document_tokens:
-                if pos_tagging(word)[0][1] in ['VAFIN', 'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VAFIN', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']:
+               
+                if pos_tagging(word)[0][0][1] in ['VAFIN', 'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VAFIN', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "V") 
-                elif pos_tagging(word)[0][1] in ['ADJA', 'ADJD', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPOSAT', 'PWAT']:
+                elif pos_tagging(word)[0][0][1] in ['ADJA', 'ADJD', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPOSAT', 'PWAT']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "ADJ")         
-                elif pos_tagging(word)[0][1] in ['ADV', 'PAV', 'PAVREL', 'PTKA', 'PWAV', 'PWAVREL']:         
+                elif pos_tagging(word)[0][0][1] in ['ADV', 'PAV', 'PAVREL', 'PTKA', 'PWAV', 'PWAVREL']:         
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "ADV")
-                elif pos_tagging(word)[0][1] in ['NA', 'NE', 'NN']:
+                elif pos_tagging(word)[0][0][1] in ['NA', 'NE', 'NN']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "N")
                 else:
                     lemmatized_document_part = lemmatized_document_part + " " + word
@@ -135,15 +138,12 @@ def stemming (document, english = False):
     else: 
         stemmer = SnowballStemmer("german")
 
-    vectorizer = CountVectorizer()
-    tokens = vectorizer.build_analyzer()
-
     if type(document) == list:
 
         stemmed_documents = []
 
         for document_part in document:
-            document_tokens = tokens(document_part)
+            document_tokens = word_tokenize(document_part)
             stemmed_document = ""
             for word in document_tokens:
                 word = stemmer.stem(word)
@@ -162,7 +162,7 @@ def stemming (document, english = False):
         
         stemmed_documents = []
         for document_part in full_document:
-            document_tokens = tokens(document_part)
+            document_tokens = word_tokenize(document_part)
             stemmed_document = ""
             for word in document_tokens:
                 word = stemmer.stem(word)
@@ -173,7 +173,7 @@ def stemming (document, english = False):
 
 
     elif type(document) == str:
-        document_tokens = tokens(document)
+        document_tokens = word_tokenize(document)
         stemmed_document = ""
         for word in document_tokens:
             word = stemmer.stem(word)
@@ -185,7 +185,7 @@ def stemming (document, english = False):
         stemmed_documents = []
 
         for document_part in document:
-            document_tokens = tokens(document_part)
+            document_tokens = word_tokenize(document_part)
             stemmed_document = ""
             for word in document_tokens:
                 word = stemmer.stem(word)
