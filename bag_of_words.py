@@ -12,7 +12,7 @@ def bag_of_words ( document, index_of_document = None, specific_word = None, opt
         document(str, list of strings or file directory): document collection 
 		indexOfDocument(int): (default None) index of the document whose vector is to be returned
 		specific_word (str): (default None) word whose vector is to be returned
-        optional (bool): (default False) True, if Bag of Words is needed for other method
+        optional (bool): (default False) True, if Bag of Words representation as ndarray is needed for other method
     Returns:
         pandas.core.frame.DataFrame: Vector representation for all documents
         pandas.core.series.Series: vector representation for selected document or word
@@ -65,7 +65,7 @@ def words_counting (document, specific_word = None):
         return sorted_wordcount_df 
 
 def document_transformer  (document):
-    """Convert file directory to an list 
+    """Convert string or file directory to an list 
     Args:
         document(str, list of strings or file directory): document collection
     Returns:
