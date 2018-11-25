@@ -39,30 +39,15 @@ def words_counting (document, specific_word = None):
         document(str, list of strings or file directory): document collection
     	specific_word (str): (default None) word whose number is to be returned
     Returns:
-        pandas.core.frame.DataFrame: an assignment of terms to number of terms in all documents	
-        pandas.core.series.Series: number how often the word appears in the document collection
+        pandas.core.series.Series: an assignment of terms to number of terms in all documents	
     """
     full_document = document_transformer(document)
-    wordcount = {}
+    tf = bag_of_words(full_document)
 
-    for document_part in full_document:
-        for word in document_part.split():
-            if word not in wordcount:
-                wordcount[word] = 1
-            else:
-                wordcount[word] += 1
-    
-    new_wordcount = sorted(wordcount.keys())
-    sorted_wordcount = {}
+    tf_sum = tf.sum()
 
-    for word in new_wordcount:
-        sorted_wordcount[word] = wordcount.get(word)
-
-    sorted_wordcount_df = pd.DataFrame(sorted_wordcount, index = [0])
-    if specific_word != None:
-        return sorted_wordcount_df.loc[:,specific_word]
-    else:
-        return sorted_wordcount_df 
+    tf_sum_sorted= tf_sum.sort_values(ascending=False)
+    return tf_sum_sorted
 
 def document_transformer  (document):
     """Convert string or file directory to an list 
