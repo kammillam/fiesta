@@ -157,7 +157,6 @@ def chi_square (category1, category2, specific_word = None, list_size = 10, visu
             max_value = chi[max_key]
             result_chi_square [max_key] = max_value
             del chi [max_key]
-            features.append(max_key)
     result_df = pd.Series(result_chi_square)
     if visualize == True:
         
