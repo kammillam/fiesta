@@ -1,0 +1,1 @@
+from fiesta.feature_selection.selection import term_frequency_selection, tfidf_selection, information_gain, chi_square, latent_semantic_analysis
