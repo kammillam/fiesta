@@ -1,6 +1,5 @@
 """
-This module 
-
+This module preprocesses a text before feature extraction.
 """
 from nltk.corpus import stopwords
 from os.path import isfile
@@ -12,7 +11,7 @@ from nltk.stem import SnowballStemmer, WordNetLemmatizer
 from fiesta.germalemma import GermaLemma
 
 def stop_words (document, language = "en", user_definded_stop_word_list = None, punctuation = True):
-    """Remove stop words which do not contribute to any future operations
+    """Remove stop words which do not contribute to any future operations.
         Args:
             document(str, list or file directory): document collection
  			language (str): (default „en“)  if "en": a pre-defened set of english stop words will be used
@@ -50,7 +49,7 @@ def stop_words (document, language = "en", user_definded_stop_word_list = None, 
     return documents_without_stopwords    
 
 def pos_tagging(document, language = "en"):
-    """Determine the part of speech of each word
+    """Determine the part of speech of each word.
         Args:
             document(str, list or file directory): document collection
 			language(str): (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 
@@ -84,7 +83,7 @@ def pos_tagging(document, language = "en"):
             return documents_pos_tag 
 
 def lemmatizer (document, language = "en"):
-    """Reduce each word to their word stem or dictionary form
+    """Reduce each word to their word stem or dictionary form.
         Args:
             document(str, list or file directory): document collection
 			language = "en": (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 	
@@ -134,7 +133,7 @@ def lemmatizer (document, language = "en"):
         return total_lemmatized_document
             
 def stemming (document, language = "en"):
-    """Reduce each word to their word stem or root form
+    """Reduce each word to their word stem or root form.
         Args:
             document(str, list or file directory): document collection
 			language = "en": (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 	
