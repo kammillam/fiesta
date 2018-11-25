@@ -1,70 +1,94 @@
-from fiesta.normalizing import pos_tagging, lemmatizer, stop_words
 from nltk import word_tokenize
 from math import log
 from fiesta.bag_of_words import document_transformer
 from sklearn.feature_selection import chi2
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-import numpy
 from sklearn.decomposition import TruncatedSVD
+from pylab import *
+import numpy
+import pandas as pd
+from fiesta.bag_of_words import bag_of_words
+from fiesta.tfidf import tfidf
 
-def information_gain(categorie1, categorie2, min_ig = None, specific_word = None, list_size = 10):
+def term_frequency_selection(category1, category2, list_size = 10):
 
-    cat1 = document_transformer(categorie1)
-    cat2 = document_transformer(categorie2)
+    cat1 = document_transformer(category1)
+    cat2 = document_transformer(category2)
+    full_document = cat1+cat2
+
+    tf = bag_of_words(full_document)
+
+    tf_sum = tf.sum()
+
+    tf_sort=tf_sum.sort_values(ascending=False)
+    return tf_sort[:list_size]
+
+def tfidf_selection (category1, category2, list_size = 10):
+    cat1 = document_transformer(category1)
+    cat2 = document_transformer(category2)
+    full_document = cat1+cat2
+
+    tf_idf = tfidf(full_document)
+
+    tf_idf_sum = tf_idf.sum()
+
+    tf_idf_sort=tf_idf_sum.sort_values(ascending=False)
+    return tf_idf_sort[:list_size]
+
+
+def information_gain(category1, category2, min_ig = None, specific_word = None, list_size = 10, visualize = False):
+    """This is docstring"""   
+
+    cat1 = document_transformer(category1)
+    cat2 = document_transformer(category2)
 
     individual_words = [] 
-
     for doc in cat1 + cat2:
         tokens = word_tokenize(doc)
         for token in tokens:
-            if token not in individual_words:
-                individual_words.append(token)
-
+            if len(token) > 2:
+                if token not in individual_words:
+                    individual_words.append(token)
     ig = { }
 
     for word in individual_words:
-        a = 0 #kommt in der Kategorie 
-        b = 0 #kommt in der anderen Kategorie 
-        c = 0 # kommt nicht in der Kategorie 
-        d = 0 # kommt nicht in der anderer Kategorie 
+        cat_a = 0 #kommt in der Kategorie 
+        cat_b = 0 #kommt in der anderen Kategorie 
+        not_cat_a = 0 # kommt nicht in der Kategorie   
+        not_cat_b = 0 # kommt nicht in der anderer Kategorie   
         for doc in cat1:
          
             if word in doc:
-                a= a + 1
+                cat_a = cat_a + 1
             else:
-                c  = c + 1
+                not_cat_a  = not_cat_a + 1
 
     # neg ist falsche Kategorie, Berechnung von B und D: B falls vorkommt und D falls nicht vorkommt 
-
         for doc in cat2:
             if word in doc:
                 
-                b = b +1
+                cat_b = cat_b + 1
             else:
-                d = d + 1
-    
-        if a*b*c*d!=0:
-            n = a + b + c + d
-            h_word = (-( (a+c)/n * log ( (a+c)/n ,2) + (b+d)/n * log((b+d)/n ,2) ))
-            h_word_pos = (- (a/(a+b) * log (a/(a+b) , 2) + b/(a+b) * log (b/(a+b) , 2) ) )
-            h_word_neg = (- (c/(c+d) * log (c/(c+d) , 2) + d/(c+d) * log (d/(c+d) , 2) ) )
-
-            h_word_over = (a+b)/n * h_word_pos + (c+d)/n * h_word_neg
+                not_cat_b = not_cat_b + 1
+        if cat_a*cat_b*not_cat_a*not_cat_b!=0:
+            all_words = cat_a + cat_b + not_cat_a + not_cat_b
+            h_word = (-( (cat_a + not_cat_a)/all_words * log ( (cat_a + not_cat_a)/all_words )/log (2) + (cat_b + not_cat_b)/all_words * log((cat_b + not_cat_b)/all_words )/log(2) ))
+            h_word_pos = (- (cat_a/(cat_a + cat_b) * log (cat_a/(cat_a + cat_b)) / log(2) + cat_b/(cat_a + cat_b) * log (cat_b/(cat_a + cat_b))/ log(2) ) )
+            h_word_neg = (- (not_cat_a/(not_cat_a + not_cat_b) * log (not_cat_a/(not_cat_a + not_cat_b))/ log(2) + not_cat_b/(not_cat_a + not_cat_b) * log (not_cat_b/(not_cat_a + not_cat_b))/ log(2) ) )
+           
+            h_word_over = (cat_a + cat_b)/all_words * h_word_pos + (not_cat_a + not_cat_b)/all_words * h_word_neg
 
             ig_cat = h_word - h_word_over
-        
             if min_ig == None:
                 ig[word] = ig_cat
             elif ig_cat > min_ig:
                 ig[word] = ig_cat
 
     result_ig = { }
-
     if list_size != None:
         size = list_size
     else: 
         size = len(ig)    
-
     if specific_word != None:
        
         result_ig[specific_word] = ig[specific_word]
@@ -75,14 +99,24 @@ def information_gain(categorie1, categorie2, min_ig = None, specific_word = None
             max_value = ig[max_key]
             result_ig [max_key] = max_value
             del ig [max_key]
+    result_ig_df = pd.Series(result_ig)
+    if visualize == True:
+        positions = arange(list_size) + .5 # the bar centers on the y axis
+        figure()
+        barh(positions, list(result_ig.values()), align='center')
+        yticks(positions, list(result_ig.keys()))
+        xlabel('Weight')
+        title('Strongest terms for categories' )
+        show()  
+        
+    return result_ig_df
 
-    return result_ig
 
+def chi_square (category1, category2, specific_word = None, list_size = 10, visualize = False):
+    """This is docstring"""   
 
-def chi_square (categorie1, categorie2, specific_word = None, list_size = 10):
-
-    cat1 = document_transformer(categorie1)
-    cat2 = document_transformer(categorie2)
+    cat1 = document_transformer(category1)
+    cat2 = document_transformer(category2)
 
     documents = []
     categories = []
@@ -113,7 +147,6 @@ def chi_square (categorie1, categorie2, specific_word = None, list_size = 10):
         size = len(chi)    
 
     result_chi_square = {}
-
     if specific_word != None:
        
         result_chi_square[specific_word] = chi[specific_word]
@@ -124,12 +157,25 @@ def chi_square (categorie1, categorie2, specific_word = None, list_size = 10):
             max_value = chi[max_key]
             result_chi_square [max_key] = max_value
             del chi [max_key]
+            features.append(max_key)
+    result_df = pd.Series(result_chi_square)
+    if visualize == True:
+        
+        positions = arange(list_size) + .5 # the bar centers on the y axis
+        figure()
+        barh(positions, list(result_chi_square.values()), align='center')
+        yticks(positions, list(result_chi_square.keys()))
+        xlabel('Weight')
+        title('Strongest terms for categories' )
+        show()
+     
+    return result_df
 
-    return result_chi_square
+def latent_semantic_analysis (category1, category2, list_size = 10 , visualize = False ):
+    """This is docstring"""   
 
-def latent_semantic_analysis (categorie1, categorie2, list_size = 10):
-    cat1 = document_transformer(categorie1)
-    cat2 = document_transformer(categorie2)
+    cat1 = document_transformer(category1)
+    cat2 = document_transformer(category2)
 
     documents = cat1 + cat2
     vectorizer = TfidfVectorizer(max_df=0.5, min_df=2, stop_words="english",   use_idf=True)
@@ -145,21 +191,35 @@ def latent_semantic_analysis (categorie1, categorie2, list_size = 10):
     documents_lsa = lsa.fit_transform(documents_tfidf)
 
     values_list = []
-    for categorie in range(0, 2):
+    for category in range(0, 2):
 
-        cat = lsa.components_[categorie]
+        cat = lsa.components_[category]
     
         indeces = numpy.argsort(cat).tolist()
     
         indeces.reverse()    
         word = [feat_names[weightIndex] for weightIndex in indeces[0:list_size]]    
         value = [cat[weightIndex] for weightIndex in indeces[0:list_size]]   
+        
+        if visualize == True:
+            word.reverse()
+            value.reverse()
+            positions = arange(list_size) + .5 # the bar centers on the y axis
+            figure(category)
+            barh(positions, value, align='center')
+            yticks(positions, word)
+            xlabel('Weight')
+            title('Strongest terms for category %d' % (category))
+            show()
+
         lsa_values = { }
 
         for i in range (list_size):
             lsa_values [word[i]] = value[i]
+            
         values_list.append(lsa_values)
-    return values_list
+        values_list_df = pd.DataFrame(values_list)
+    return values_list_df.T
 
 
 
