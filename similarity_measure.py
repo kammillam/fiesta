@@ -12,7 +12,6 @@ def simple_matching_coefficient (document1, document2):
     document1 = document_transformer(document1) # aus einem file wird str gemacht 
     document2 = document_transformer(document2)
     total_document = document_concatenation(document1,document2) #aus zwei Dokumenten wird gemeinsamer BoW gemacht 
-
     i = 0  # i ist Index von Word im Dokumentenvektor
     common_part = 0 # ist Zähler im Formel; das was gemeinsam bei beiden Dokumenten ist 
     while i < len(total_document[0]): 
@@ -99,7 +98,7 @@ def document_concatenation (document1, document2): #aus zwei Dokumenten wird gem
     document = []
     document.append(document1)
     document.append(document2)
-    documents_bag_of_words = bag_of_words(document=document)
+    documents_bag_of_words = bag_of_words(document=document, optional=True)
     return documents_bag_of_words    
 
 def document_transformer (document): # aus einem file wird str gemacht 
@@ -111,6 +110,7 @@ def document_transformer (document): # aus einem file wird str gemacht
         document = open(document, "r")
         for line in document:
             file_document = line
+            break
         document.close()  
         return file_document # nur erster Dokument im File wird für den Vergleich genommen
     elif type(document) == str:
