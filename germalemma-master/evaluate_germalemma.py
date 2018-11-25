@@ -12,7 +12,7 @@ except ImportError:
     print("NOT using pattern.de")
     PATTERNLIB = False
 
-from germalemma import GermaLemma, VALID_POS_PREFIXES
+from fiesta.germalemma import GermaLemma, VALID_POS_PREFIXES
 
 
 def load_tokens_from_tiger(corpus_file):
@@ -43,7 +43,7 @@ def lemma_via_patternlib(token, pos):
     return token
 
 print("loading tokens...")
-all_tokens = load_tokens_from_tiger('data/tiger_release_aug07.corrected.16012013.conll09')
+all_tokens = load_tokens_from_tiger('tiger_release_aug07.corrected.16012013.conll09')
 
 print("running 10 randomized evaluations")
 pct_success_all_trials = []

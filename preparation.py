@@ -1,7 +1,7 @@
-from fiesta.normalizing import stop_words, lemmatizer, stemming
-from fiesta.bag_of_words import bag_of_words, words_counting
-import fiesta.feature_selection as fs
-from fiesta.tfidf import tfidf
+from fiesta.preprocessing.normalizing import stop_words, lemmatizer, stemming
+from fiesta.feature_extraction.bag_of_words import bag_of_words, words_counting
+import fiesta.feature_selection.selection as fs
+from fiesta.feature_extraction.tfidf import tfidf
 import pandas as pd
 
 def extract_features (document, language = "en", optional = False):

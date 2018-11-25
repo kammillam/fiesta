@@ -1,17 +1,26 @@
+"""
+This module implements feature selection methods.
+"""
 from nltk import word_tokenize
 from math import log
-from fiesta.bag_of_words import document_transformer
+from fiesta.feature_extraction.bag_of_words import bag_of_words, document_transformer
+from fiesta.feature_extraction.tfidf import tfidf
 from sklearn.feature_selection import chi2
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 from pylab import *
 import numpy
 import pandas as pd
-from fiesta.bag_of_words import bag_of_words
-from fiesta.tfidf import tfidf
 
 def term_frequency_selection(category1, category2, list_size = 10):
-
+    """Remove stop words which do not contribute to any future operations.
+        Args:
+            category1(str, list or file directory):
+			category2(str, list or file directory):
+			list_size(int): (default 10) number of features to be returned
+        Returns: 
+            pandas.core.series.Series: most relevant features and their frequency in all documents           
+    """
     cat1 = document_transformer(category1)
     cat2 = document_transformer(category2)
     full_document = cat1+cat2
@@ -24,6 +33,14 @@ def term_frequency_selection(category1, category2, list_size = 10):
     return tf_sort[:list_size]
 
 def tfidf_selection (category1, category2, list_size = 10):
+    """Remove stop words which do not contribute to any future operations.
+        Args:
+            category1(str, list or file directory): document collection of the first category
+			category2(str, list or file directory): document collection of the second category
+			list_size(int): (default 10) number of features to be returned
+        Returns:
+            pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
+    """
     cat1 = document_transformer(category1)
     cat2 = document_transformer(category2)
     full_document = cat1+cat2
@@ -37,8 +54,16 @@ def tfidf_selection (category1, category2, list_size = 10):
 
 
 def information_gain(category1, category2, min_ig = None, specific_word = None, list_size = 10, visualize = False):
-    """This is docstring"""   
-
+    """Remove stop words which do not contribute to any future operations.
+        Args:
+            category1(str, list or file directory): document collection of the first category
+			category2(str, list or file directory): document collection of the second category
+            min_ig(int): (default None)
+			specific_word(str): (default None) 
+			list_size(int): (default 10) number of features to be returned
+        Returns:
+            pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
+    """
     cat1 = document_transformer(category1)
     cat2 = document_transformer(category2)
 
@@ -113,8 +138,12 @@ def information_gain(category1, category2, min_ig = None, specific_word = None, 
 
 
 def chi_square (category1, category2, specific_word = None, list_size = 10, visualize = False):
-    """This is docstring"""   
-
+    """Remove stop words which do not contribute to any future operations.
+        Args:
+            
+        Returns: 
+            
+    """
     cat1 = document_transformer(category1)
     cat2 = document_transformer(category2)
 
@@ -171,8 +200,12 @@ def chi_square (category1, category2, specific_word = None, list_size = 10, visu
     return result_df
 
 def latent_semantic_analysis (category1, category2, list_size = 10 , visualize = False ):
-    """This is docstring"""   
-
+    """Remove stop words which do not contribute to any future operations.
+        Args:
+            
+        Returns: 
+            
+    """
     cat1 = document_transformer(category1)
     cat2 = document_transformer(category2)
 

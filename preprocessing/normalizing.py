@@ -4,11 +4,11 @@ This module preprocesses a text before feature extraction.
 from nltk.corpus import stopwords
 from os.path import isfile
 from nltk import pos_tag, word_tokenize
-from fiesta.bag_of_words import document_transformer
+from fiesta.feature_extraction.bag_of_words import document_transformer
 from ClassifierBasedGermanTagger.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
 import pickle
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
-from fiesta.germalemma import GermaLemma
+from fiesta.preprocessing.germalemma import GermaLemma
 
 def stop_words (document, language = "en", user_definded_stop_word_list = None, punctuation = True):
     """Remove stop words which do not contribute to any future operations.
