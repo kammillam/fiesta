@@ -3,7 +3,8 @@ This module implements feature selection methods.
 """
 from nltk import word_tokenize
 from math import log
-from fiesta.feature_extraction.bag_of_words import bag_of_words, document_transformer
+import pandas as pd
+from fiesta.fiesta.feature_extraction.bag_of_words import words_counting, document_transformer
 from fiesta.feature_extraction.tfidf import tfidf
 from sklearn.feature_selection import chi2
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -12,7 +13,7 @@ from pylab import *
 import numpy
 import pandas as pd
 
-def term_frequency_selection(category1, category2, list_size = 10):
+def term_frequency_selection(category1, category2 = None, specific_word = None, list_size = 10):
     """Remove stop words which do not contribute to any future operations.
         Args:
             category1(str, list or file directory):
@@ -22,17 +23,21 @@ def term_frequency_selection(category1, category2, list_size = 10):
             pandas.core.series.Series: most relevant features and their frequency in all documents           
     """
     cat1 = document_transformer(category1)
-    cat2 = document_transformer(category2)
-    full_document = cat1+cat2
+    if category2 != None:
+        cat2 = document_transformer(category2)
+        full_document = cat1+cat2
 
-    tf = bag_of_words(full_document)
+    else:
+        full_document = cat1
 
-    tf_sum = tf.sum()
+    tf_sum = words_counting(full_document)
 
+    if specific_word != None:
+        return pd.Series({specific_word : tf_sum.loc[specific_word]})
     tf_sort=tf_sum.sort_values(ascending=False)
     return tf_sort[:list_size]
 
-def tfidf_selection (category1, category2, list_size = 10):
+def tfidf_selection (category1, category2 = None, specific_word = None, list_size = 10):
     """Remove stop words which do not contribute to any future operations.
         Args:
             category1(str, list or file directory): document collection of the first category
@@ -42,13 +47,20 @@ def tfidf_selection (category1, category2, list_size = 10):
             pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
     """
     cat1 = document_transformer(category1)
-    cat2 = document_transformer(category2)
-    full_document = cat1+cat2
+    if category2 != None:
+        cat2 = document_transformer(category2)
+        full_document = cat1+cat2
+
+    else:
+        full_document = cat1
 
     tf_idf = tfidf(full_document)
 
     tf_idf_sum = tf_idf.sum()
-
+    
+    if specific_word != None:
+        return pd.Series({specific_word : tf_idf_sum.loc[specific_word]})
+    
     tf_idf_sort=tf_idf_sum.sort_values(ascending=False)
     return tf_idf_sort[:list_size]
 
