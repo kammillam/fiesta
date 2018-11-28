@@ -1,1 +1,0 @@
-from germalemma.germalemma import GermaLemma 
