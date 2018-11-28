@@ -13,5 +13,10 @@ setup(name='fiesta',
           'pandas',
           'matplotlib',
           'nltk',
+          'pyphen'
       ],
+      dependency_links=[
+            'https://github.com/WZBSocialScienceCenter/germalemma.git'
+        ],
+
       zip_safe=False)
