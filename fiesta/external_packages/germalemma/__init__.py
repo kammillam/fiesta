@@ -1,0 +1,1 @@
+from fiesta.external_packages.germalemma.germalemma import GermaLemma
