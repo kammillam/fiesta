@@ -4,8 +4,8 @@ This module preprocesses a text before feature extraction.
 from nltk.corpus import stopwords
 from os.path import isfile
 from nltk import pos_tag, word_tokenize
-from fiesta.feature_extraction.bag_of_words import document_transformer
-#from fiesta.external_packages.ClassifierBasedGermanTagger.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
+from fiesta.transformers.document_transformer import document_transformer
+from fiesta.external_packages.ClassifierBasedGermanTagger.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
 import pickle
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
 from fiesta.external_packages.germalemma.germalemma import GermaLemma
@@ -22,11 +22,11 @@ def stop_words (document, language = "en", user_definded_stop_word_list = None, 
             str: String without stop words
             list: list of strings without stop words
     """
+    stop_word_list = []
     if user_definded_stop_word_list != None:
         stop_word_list = user_definded_stop_word_list
     elif language == "en":
         stop_word_list = set (stopwords.words ('english'))     
-   
     elif language == "de":
         stop_word_list = set (stopwords.words ('german'))     
 
@@ -116,14 +116,14 @@ def lemmatizer (document, language = "en"):
             document_tokens = document.split()
             lemmatized_document_part = ""
             for word in document_tokens:
-               
-                if pos_tagging(word)[0][0][1] in ['VAFIN', 'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VAFIN', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']:
+                print(pos_tagging(word, language="de"))
+                if pos_tagging(word, language="de")[0][0][1] in ['VAFIN', 'VAIMP', 'VAINF', 'VAPP', 'VMFIN', 'VMINF', 'VAFIN', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "V") 
-                elif pos_tagging(word)[0][0][1] in ['ADJA', 'ADJD', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPOSAT', 'PWAT']:
+                elif pos_tagging(word, language="de")[0][0][1] in ['ADJA', 'ADJD', 'PDAT', 'PDS', 'PIAT', 'PIS', 'PPOSAT', 'PWAT']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "ADJ")         
-                elif pos_tagging(word)[0][0][1] in ['ADV', 'PAV', 'PAVREL', 'PTKA', 'PWAV', 'PWAVREL']:         
+                elif pos_tagging(word, language="de")[0][0][1] in ['ADV', 'PAV', 'PAVREL', 'PTKA', 'PWAV', 'PWAVREL']:         
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "ADV")
-                elif pos_tagging(word)[0][0][1] in ['NA', 'NE', 'NN']:
+                elif pos_tagging(word, language="de")[0][0][1] in ['NA', 'NE', 'NN']:
                     lemmatized_document_part = lemmatized_document_part + " " + lem.find_lemma(word, "N")
                 else:
                     lemmatized_document_part = lemmatized_document_part + " " + word
@@ -161,8 +161,7 @@ def stemming (document, language = "en"):
 
         return stemmed_documents
 
-    
-    elif isfile(document) :
+    elif isfile(document):
         full_document = []    
         document = open(document, "r")
         full_document = document.read().split('\n')

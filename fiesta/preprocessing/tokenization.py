@@ -1,5 +1,5 @@
 from nltk import ngrams, word_tokenize
-from fiesta.feature_extraction.bag_of_words import document_transformer
+from fiesta.transformers.document_transformer import document_transformer
 
 def tokenization (document, index_of_document = None):
     full_document = document_transformer(document)

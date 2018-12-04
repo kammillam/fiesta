@@ -1,0 +1,1 @@
+from fiesta.transformers.document_transformer import document_transformer

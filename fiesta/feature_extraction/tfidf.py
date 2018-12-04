@@ -3,7 +3,7 @@ This module allows transfromation of document collection into tf- and tfidf-repr
 calculation of idf-weights of each term in the document collection.
 """
 from sklearn.feature_extraction.text import TfidfTransformer
-from fiesta.feature_extraction.bag_of_words import document_transformer
+from fiesta.transformers.document_transformer import document_transformer
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 
