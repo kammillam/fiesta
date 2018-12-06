@@ -10,11 +10,13 @@
 		
 		This method preprocesses the documents and extracts features from the preprocessed text.
 
-		Parameters
-			document_collection (str, list or file directory): document collection to extract the features of
+		Parameters:
+			document_collection (str, list or file directory): document collection to extract the 
+			features of
 			language_of_documents (str): (default „en“) language of the document collection 
 			preprocessing_only (bool): (default False) if True returns only preprocessed documents
-		Returns: list of preprocessed documents or DataFrame with matrix of token counts, tf-idf representation of the document collection and preprocessed documents. 
+		Returns: list of preprocessed documents or DataFrame with matrix of token counts, tf-idf representation 
+		of the document collection and preprocessed documents. 
 		Return type: list or pandas.core.frame.DataFrame
 
 * _fiesta.automatic.preparation.select_features (document_collection_cat1, document_collection_cat2 = None):
@@ -22,9 +24,13 @@
 		This method select relevant features based on the feature_selection module.
 
 		Parameters: 
-			document_collection_cat1 (str, list or file directory): document collection of the first category
-			document_collection_cat2 (str, list or file directory): (default None) document collection of the second category
-		Returns: relevant features for two document collections selected with all five methods of the feature_selection module or relevant features for one document collection selected with two methods.
+			document_collection_cat1 (str, list or file directory): document collection of the first 
+			category
+			document_collection_cat2 (str, list or file directory): (default None) document collection 
+			of the second category
+		Returns: relevant features for two document collections selected with all five methods 
+		of the feature_selection module or relevant features for one document collection selected 
+		with two methods.
 		Return type:  pandas.core.frame.Series  or pandas.core.frame.DataFrame
 
 * _fiesta.automatic.preparation.extract_relevant_features (document_collection_cat1, document_collection_cat2 = None,  language_of_document_collection = ‚en‘):
@@ -76,8 +82,10 @@
 	This method removes stop words which do not contribute to any future 				operations.
 
 		Parameters:
-			document_collection (str, list or file directory): document collection where stop words are to be removed 
-			language (str): (default „en“) if "en": a predefened set of english stop words will be used;  if "de": a predefened set of german stop words will be used
+			document_collection (str, list or file directory): document collection where 
+			stop words are to be removed 
+			language (str): (default „en“) if "en": a predefened set of english stop words will be used;  
+			if "de": a predefened set of german stop words will be used
 			user_defined_stop_word_list (list): (default None) a user defined set of stop words will be used
 			punctuation (bool): (default True) special characters will be removed
 		Returns: String or list of documents without stop words
@@ -89,7 +97,8 @@
 
 		Parameters: 
 			document_collection (str, list or file directory): document collection
-			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 				
+			language (str): (default „en“) „en“ for english; „de“ for german: for which language 
+			the method is to be executed 				
 		Returns:  list of assigned part-of-speech-tags for each word in form (term, part-of-speech-tag)
 		Return type: list 
 
@@ -99,7 +108,8 @@
 
 		Parameters: 
 			document_collection (str, list or file directory): document collection
-			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 	
+			language (str): (default „en“) „en“ for english; „de“ for german: for which language 
+			the method is to be executed 	
 		Returns: String or list of documents with lemmatized words
 		Return type: str or list 
 
@@ -109,7 +119,8 @@
 
 		Parameters: 
 			document_collection (str, list or file directory): document collection
-			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 		
+			language (str): (default „en“) „en“ for english; „de“ for german: for which 
+			language the method is to be executed 		
 		Returns: String or list of strings with stemmed words
 		Return type: str or list 
 
@@ -138,11 +149,13 @@ This module enables a transformation of the document collection into vector spac
 		Parameters: 
 			document_collection(str, list of strings or file directory): document collection 
 			specific_word (str): (default None) word whose number is to be returned
-		Returns: an assignment of terms to number of terms in all documents		Return type: pandas.core.series.Series
+		Returns: an assignment of terms to number of terms in all documents		
+		Return type: pandas.core.series.Series
 
 #### fiesta.feature_extraction.tfidf
 
-	This module allows transformation of document collection into tf- and tfidf-		representation and calculation of idf-weights of each term in the document collection.
+	This module allows transformation of document collection into tf- and tfidf-		
+	representation and calculation of idf-weights of each term in the document collection.
 
 * _fiesta.feature_extraction.tfidf.term_frequency (document_collection, index_of_document = None, specific_word = None, scaled = False)
 		
@@ -152,7 +165,8 @@ This module enables a transformation of the document collection into vector spac
 			document_collection (str, list of strings or file directory): document collection 
 			index_of_document (int):  (default None) index of the document whose vector is to be returned
 			specific_word (str): (default None) word whose vector is to be returned
-			scaled (bool):  (default False)  True, if scaling relative to the frequency of words in the document is needed
+			scaled (bool):  (default False)  True, if scaling relative to the frequency of words 
+			in the document is needed
 		Returns: tf representation of the document collection or of selected document or word
 		Return type: pandas.core.frame.DataFrame 
 				 pandas.core.series.Series
