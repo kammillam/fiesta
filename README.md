@@ -6,7 +6,7 @@
 
 		This module contains methods for automatic preprocessing of text, feature extraction and feature selection.
 
-* _fiesta.automatic.preparation.extract_features (document_collection, language_of_documents = "en", preprocessing_only = False):
+* _fiesta.automatic.preparation.extract_features (document_collection, language_of_documents = "en", preprocessing_only = False):_
 		
 		This method preprocesses the documents and extracts features from the preprocessed text.
 
@@ -19,7 +19,7 @@
 		of the document collection and preprocessed documents. 
 		Return type: list or pandas.core.frame.DataFrame
 
-* _fiesta.automatic.preparation.select_features (document_collection_cat1, document_collection_cat2 = None):
+* _fiesta.automatic.preparation.select_features (document_collection_cat1, document_collection_cat2 = None):_
 		
 		This method select relevant features based on the feature_selection module.
 
@@ -33,7 +33,7 @@
 		with two methods.
 		Return type:  pandas.core.frame.Series  or pandas.core.frame.DataFrame
 
-* _fiesta.automatic.preparation.extract_relevant_features (document_collection_cat1, document_collection_cat2 = None,  language_of_document_collection = ‚en‘):
+* _fiesta.automatic.preparation.extract_relevant_features (document_collection_cat1, document_collection_cat2 = None,  language_of_document_collection = ‚en‘):_
 		
 		Firstly prepares this method the document collection, then it extracts features and at the end it selects relevant features.
 
@@ -53,7 +53,7 @@
 		This module divides a documents into individuals words or sequence of words
  		by splitting on the blank spaces.
 
-* _fiesta.preprocessing.tokenization.tokenization (document_collection):
+* _fiesta.preprocessing.tokenization.tokenization (document_collection):_
 		
 		This method divides a documents into individual words (strings) by splitting on the blank spaces.
 
@@ -63,7 +63,7 @@
 		Return type: list 
 
 
-* _fiesta.preprocessing.tokenization.n_grams_tokenization (document_collection,  n)
+* _fiesta.preprocessing.tokenization.n_grams_tokenization (document_collection,  n):_
 
 		This method divides a documents into sequences of n words (strings) by splitting on the blank spaces.
 
@@ -77,7 +77,7 @@
 
 		This module preprocesses a text before feature extraction.
 
-* _fiesta.preprocessing.normalizing.stop_words (document_collection, language = "en", user_defined_stop_word_list = None, punctuation = True)
+* _fiesta.preprocessing.normalizing.stop_words (document_collection, language = "en", user_defined_stop_word_list = None, punctuation = True):_
 
 	This method removes stop words which do not contribute to any future 				operations.
 
@@ -91,7 +91,7 @@
 		Returns: String or list of documents without stop words
 		Return type: str or list 
 
-* _fiesta.preprocessing.normalizing.pos_tagging ( document_collection, language = "en")
+* _fiesta.preprocessing.normalizing.pos_tagging ( document_collection, language = "en"):_
 		
 		This method determines the part of speech of each word.
 
@@ -102,7 +102,7 @@
 		Returns:  list of assigned part-of-speech-tags for each word in form (term, part-of-speech-tag)
 		Return type: list 
 
-* _fiesta.preprocessing.normalizing.lemmatizer (document_collection, language = "en")
+* _fiesta.preprocessing.normalizing.lemmatizer (document_collection, language = "en"):_
 		
 		This method reduces each word to their word stem or dictionary form.
 
@@ -113,7 +113,7 @@
 		Returns: String or list of documents with lemmatized words
 		Return type: str or list 
 
-* _fiesta.preprocessing.normalizing.stemming (document_collection, language = "en")
+* _fiesta.preprocessing.normalizing.stemming (document_collection, language = "en"):_
 		
 		This method reduces each word to their word stem or root form.
 
@@ -130,7 +130,7 @@
 #### fiesta.feature_extraction.bag_of_words
 This module enables a transformation of the document collection into vector space representation and the counting of occurrences of the respective word in the document collection.
 
-* _fiesta.feature_extraction.bag_of_words.bag_of_words (document_collection, index_of_document = None, specific_word = None, array = False) 
+* _fiesta.feature_extraction.bag_of_words.bag_of_words (document_collection, index_of_document = None, specific_word = None, array = False):_
 
 	This method converts a collection of text documents to a matrix of token counts.
 
@@ -142,7 +142,7 @@ This module enables a transformation of the document collection into vector spac
 		Returns: vector representation for all documents or vector representation for selected document or word
 		Return type: pandas.core.frame.DataFrame  or pandas.core.series.Series or numpy.ndarray
 
-* _fiesta.feature_extraction.bag_of_words.words_counting (document_collection, specific_word = None)
+* _fiesta.feature_extraction.bag_of_words.words_counting (document_collection, specific_word = None):_
 	
 		This method  counts the number of words in the whole document collection.
 
@@ -157,8 +157,8 @@ This module enables a transformation of the document collection into vector spac
 	This module allows transformation of document collection into tf- and tfidf-		
 	representation and calculation of idf-weights of each term in the document collection.
 
-* _fiesta.feature_extraction.tfidf.term_frequency (document_collection, index_of_document = None, specific_word = None, scaled = False)
-		
+* _fiesta.feature_extraction.tfidf.term_frequency (document_collection, index_of_document = None, specific_word = None, scaled = False):_
+
 		This method calculates term frequency in each document of the document collection.
 
 		Parameters: 
@@ -171,7 +171,7 @@ This module enables a transformation of the document collection into vector spac
 		Return type: pandas.core.frame.DataFrame 
 				 pandas.core.series.Series
 
-* _fiesta.feature_extraction.tfidf.inverse_document_frequency (document_collection, smooth = True, specific_word = None)
+* _fiesta.feature_extraction.tfidf.inverse_document_frequency (document_collection, smooth = True, specific_word = None):_
 
 		This method calculates idf-weights for each term in the document collection.
 
@@ -182,7 +182,7 @@ This module enables a transformation of the document collection into vector spac
 		Returns: idf-weights of each word in the document collection or of of selected word
 		Return type: pandas.core.frame.DataFrame or pandas.core.series.Series
 
-* _tiesta.feature_extraction.tfidf.tfidf (document_collection, smooth = True,  index_of_document =None)
+* _tiesta.feature_extraction.tfidf.tfidf (document_collection, smooth = True,  index_of_document =None):_
 
 		This method calculates tf-idf weights for each term in the document collection. 
 
@@ -194,7 +194,7 @@ This module enables a transformation of the document collection into vector spac
 		Return type: pandas.core.frame.DataFrame 
 				 pandas.core.series.Series
 
-* _fiesta.feature_extraction.tfidf.scale  (termFrequency)
+* _fiesta.feature_extraction.tfidf.scale (termFrequency):_
 
 		This method scales tf-representation of the document collection relative to the frequency of words in the document.
 
@@ -207,8 +207,8 @@ This module enables a transformation of the document collection into vector spac
 ### fiesta.feature_selection 
 
 #### fiesta.feature_selection.selection
-* _fiesta.feature_selection.selection.term_frequency_selection (document_collection_category1, document_collection_category2 = None,  specific_word = None,  list_size = 10)
-		
+* _fiesta.feature_selection.selection.term_frequency_selection (document_collection_category1, document_collection_category2 = None,  specific_word = None,  list_size = 10):_
+
 		This method selects relevant features from one or two document collections based on the frequency of occurrence of the word.
 
 		Parameters: 
@@ -219,7 +219,8 @@ This module enables a transformation of the document collection into vector spac
 		Returns: most relevant features and their frequency in all documents
 		Return type: pandas.core.series.Series
 
-* _fiesta.feature_selection.selection.tfidf_selection (document_collection_category1, document_collection_category2 = None, specific_word = None,  list_size = 10)
+* _fiesta.feature_selection.selection.tfidf_selection (document_collection_category1, document_collection_category2 = None, specific_word = None,  list_size = 10):_
+
 
 		This method selects relevant features from one or two document collections based on the tf-idf value of the word.
 		
@@ -232,7 +233,7 @@ This module enables a transformation of the document collection into vector spac
 		Return type: pandas.core.series.Series
 
 
-* _fiesta.feature_selection.selection.information_gain (document_collection_category1, document_collection_category2, specific_word = None,  list_size = 10, visualize = False)
+* _fiesta.feature_selection.selection.information_gain (document_collection_category1, document_collection_category2, specific_word = None,  list_size = 10, visualize = False):_
 			
 		This method selects relevant features from two document collections based on the information gain algorithm.
 
@@ -245,7 +246,7 @@ This module enables a transformation of the document collection into vector spac
 		Returns: most relevant features and their their information gain values 
 		Return type: pandas.core.series.Series 
 
-* _fiesta.feature_selection.selection.chi_square (document_collection_category1, document_collection_category2, specific_word = None, list_size = 10, visualize = False)
+* _fiesta.feature_selection.selection.chi_square (document_collection_category1, document_collection_category2, specific_word = None, list_size = 10, visualize = False):_
 		
 		This method selects relevant features from two document collections based on the chi square test.
 
@@ -258,7 +259,7 @@ This module enables a transformation of the document collection into vector spac
 		Returns: most relevant features and their their chi square test values 
 		Return type: pandas.core.series.Series 
 
-* _fiesta.feature_selection.selection.latent_semantic_analysis (document_collection_category1, document_collection_category2, list_size = 10, visualize = False):
+* _fiesta.feature_selection.selection.latent_semantic_analysis (document_collection_category1, document_collection_category2, list_size = 10, visualize = False):_
 
 		This method selects relevant features from two document collections based on the singular-value decomposition.
 
@@ -273,7 +274,7 @@ This module enables a transformation of the document collection into vector spac
 ### fiesta.transformers
 
 #### fiesta.transformers.document_transformer
-* _fiesta.transformers.document_transformer.document_transformer (document_collection)
+* _fiesta.transformers.document_transformer.document_transformer (document_collection):_
 	
 		Convert string or file directory to an list. 
 
