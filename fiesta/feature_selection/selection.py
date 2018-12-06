@@ -4,25 +4,26 @@ This module implements feature selection methods.
 from nltk import word_tokenize
 from math import log
 import pandas as pd
-from fiesta.fiesta.feature_extraction.bag_of_words import words_counting, document_transformer
+from fiesta.transformers.document_transformer import document_transformer
+from fiesta.feature_extraction import words_counting, bag_of_words
 from fiesta.feature_extraction.tfidf import tfidf
 from sklearn.feature_selection import chi2
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 from pylab import *
 import numpy
-import pandas as pd
 
-def term_frequency_selection(category1, category2 = None, specific_word = None, list_size = 10):
-    """Remove stop words which do not contribute to any future operations.
+def term_frequency_selection(document_collection_category1, document_collection_category2 = None, specific_word = None, list_size = 10):
+    """This method selects relevant features from one or two document collections based on the frequency of occurrence of the word in the document collection.
         Args:
-            category1(str, list or file directory):
-			category2(str, list or file directory):
-			list_size(int): (default 10) number of features to be returned
+            document_collection_category1 (str, list or file directory):
+			document_collection_category2 (str, list or file directory):
+            specific_word(str): (default None) word whose relevance in the document collection(s) is to be returned 
+			list_size (int): (default 10) number of features to be returned
         Returns: 
             pandas.core.series.Series: most relevant features and their frequency in all documents           
     """
-    cat1 = document_transformer(category1)
+    cat1 = document_transformer(document_collection_category1)
     if category2 != None:
         cat2 = document_transformer(category2)
         full_document = cat1+cat2
@@ -37,18 +38,19 @@ def term_frequency_selection(category1, category2 = None, specific_word = None, 
     tf_sort=tf_sum.sort_values(ascending=False)
     return tf_sort[:list_size]
 
-def tfidf_selection (category1, category2 = None, specific_word = None, list_size = 10):
-    """Remove stop words which do not contribute to any future operations.
+def tfidf_selection (document_collection_category1, document_collection_category2 = None, specific_word = None, list_size = 10):
+    """This method selects relevant features from one or two document collections based on the tf-idf value of the word.
         Args:
-            category1(str, list or file directory): document collection of the first category
-			category2(str, list or file directory): document collection of the second category
+            document_collection_category1(str, list or file directory): document collection of the first category
+			document_collection_category2(str, list or file directory): (dafualt None) document collection of the second category
+            specific_word(str): (default None) word whose relevance in the document collection(s) is to be returned 
 			list_size(int): (default 10) number of features to be returned
         Returns:
             pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
     """
-    cat1 = document_transformer(category1)
+    cat1 = document_transformer(document_collection_category1)
     if category2 != None:
-        cat2 = document_transformer(category2)
+        cat2 = document_transformer(document_collection_category2)
         full_document = cat1+cat2
 
     else:
@@ -65,48 +67,39 @@ def tfidf_selection (category1, category2 = None, specific_word = None, list_siz
     return tf_idf_sort[:list_size]
 
 
-def information_gain(category1, category2, min_ig = None, specific_word = None, list_size = 10, visualize = False):
-    """Remove stop words which do not contribute to any future operations.
+def information_gain(document_collection_category1, document_collection_category2, specific_word = None, list_size = 10, visualize = False):
+    """This method selects relevant features from two document collections based on the information gain algorithm.
         Args:
-            category1(str, list or file directory): document collection of the first category
-			category2(str, list or file directory): document collection of the second category
-            min_ig(int): (default None)
-			specific_word(str): (default None) 
-			list_size(int): (default 10) number of features to be returned
+            document_collection_category1 (str, list or file directory): document collection of the first category
+			document_collection_category2 (str, list or file directory): document collection of the second category
+            specific_word (str): (default None) word whose relevance in the document collection(s) is to be returned 
+			list_size (int): (default 10) number of features to be returned
+            visualize (bool): (default False) if True it represents the features graphically
         Returns:
-            pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
+            pandas.core.series.Series: most relevant features and their their information gain values             
     """
-    cat1 = document_transformer(category1)
-    cat2 = document_transformer(category2)
+    cat1 = document_transformer(document_collection_category1)
+    cat2 = document_transformer(document_collection_category2)
 
-    individual_words = [] 
-    for doc in cat1 + cat2:
-        tokens = word_tokenize(doc)
-        for token in tokens:
-            if len(token) > 2:
-                if token not in individual_words:
-                    individual_words.append(token)
+    individual_words = bag_of_words(cat1+cat2).columns.tolist()
     ig = { }
+    cat1_words_counting = words_counting(cat1, binary=True)
+    cat2_words_counting = words_counting(cat2, binary=True)
 
     for word in individual_words:
         cat_a = 0 #kommt in der Kategorie 
         cat_b = 0 #kommt in der anderen Kategorie 
         not_cat_a = 0 # kommt nicht in der Kategorie   
         not_cat_b = 0 # kommt nicht in der anderer Kategorie   
-        for doc in cat1:
-         
-            if word in doc:
-                cat_a = cat_a + 1
-            else:
-                not_cat_a  = not_cat_a + 1
+        if word in cat1_words_counting.index.values:
+            cat_a = cat1_words_counting.loc[word] 
+        not_cat_a = len(cat1) - cat_a
+    
+        if word in cat2_words_counting.index.values:
+            cat_b = cat2_words_counting.loc[word] 
+        
+        not_cat_b = len(cat2) - cat_b
 
-    # neg ist falsche Kategorie, Berechnung von B und D: B falls vorkommt und D falls nicht vorkommt 
-        for doc in cat2:
-            if word in doc:
-                
-                cat_b = cat_b + 1
-            else:
-                not_cat_b = not_cat_b + 1
         if cat_a*cat_b*not_cat_a*not_cat_b!=0:
             all_words = cat_a + cat_b + not_cat_a + not_cat_b
             h_word = (-( (cat_a + not_cat_a)/all_words * log ( (cat_a + not_cat_a)/all_words )/log (2) + (cat_b + not_cat_b)/all_words * log((cat_b + not_cat_b)/all_words )/log(2) ))
@@ -116,11 +109,8 @@ def information_gain(category1, category2, min_ig = None, specific_word = None, 
             h_word_over = (cat_a + cat_b)/all_words * h_word_pos + (not_cat_a + not_cat_b)/all_words * h_word_neg
 
             ig_cat = h_word - h_word_over
-            if min_ig == None:
-                ig[word] = ig_cat
-            elif ig_cat > min_ig:
-                ig[word] = ig_cat
-
+            ig[word] = ig_cat
+            
     result_ig = { }
     if list_size != None:
         size = list_size
@@ -131,14 +121,16 @@ def information_gain(category1, category2, min_ig = None, specific_word = None, 
         result_ig[specific_word] = ig[specific_word]
     
     else:
-       while len(result_ig) < size:
+        while len(result_ig) < size:
+            print ( len(result_ig))
+            print (result_ig)
             max_key = max(ig, key=ig.get)
             max_value = ig[max_key]
             result_ig [max_key] = max_value
             del ig [max_key]
     result_ig_df = pd.Series(result_ig)
     if visualize == True:
-        positions = arange(list_size) + .5 # the bar centers on the y axis
+        positions = arange(list_size) + .5 
         figure()
         barh(positions, list(result_ig.values()), align='center')
         yticks(positions, list(result_ig.keys()))
@@ -149,15 +141,19 @@ def information_gain(category1, category2, min_ig = None, specific_word = None, 
     return result_ig_df
 
 
-def chi_square (category1, category2, specific_word = None, list_size = 10, visualize = False):
-    """Remove stop words which do not contribute to any future operations.
+def chi_square (document_collection_category1, document_collection_category2, specific_word = None, list_size = 10, visualize = False):
+    """This method selects relevant features from two document collections based on the chi square test.
         Args:
-            
-        Returns: 
-            
+            document_collection_category1 (str, list or file directory): document collection of the first category
+			document_collection_category2 (str, list or file directory): document collection of the second category
+            specific_word (str): (default None) word whose relevance in the document collection(s) is to be returned 
+			list_size (int): (default 10) number of features to be returned
+            visualize (bool): (default False) if True it represents the features graphically
+        Returns:
+            pandas.core.series.Series: most relevant features and their chi square test values             
     """
-    cat1 = document_transformer(category1)
-    cat2 = document_transformer(category2)
+    cat1 = document_transformer(document_collection_category1)
+    cat2 = document_transformer(document_collection_category2)
 
     documents = []
     categories = []
@@ -201,7 +197,7 @@ def chi_square (category1, category2, specific_word = None, list_size = 10, visu
     result_df = pd.Series(result_chi_square)
     if visualize == True:
         
-        positions = arange(list_size) + .5 # the bar centers on the y axis
+        positions = arange(list_size) + .5 
         figure()
         barh(positions, list(result_chi_square.values()), align='center')
         yticks(positions, list(result_chi_square.keys()))
@@ -211,27 +207,29 @@ def chi_square (category1, category2, specific_word = None, list_size = 10, visu
      
     return result_df
 
-def latent_semantic_analysis (category1, category2, list_size = 10 , visualize = False ):
-    """Remove stop words which do not contribute to any future operations.
+def latent_semantic_analysis (document_collection_category1, document_collection_category2, list_size = 10 , visualize = False ):
+    """This method selects relevant features from two document collections based on the singular-value decomposition.
         Args:
-            
-        Returns: 
-            
+            document_collection_category1 (str, list or file directory): document collection of the first category
+			document_collection_category2 (str, list or file directory): document collection of the second category
+			list_size (int): (default 10) number of features to be returned
+            visualize (bool): (default False) if True it represents the features graphically
+        Returns:
+            pandas.core.frame.DataFrame: most relevant features for each category and their relevance values             
     """
-    cat1 = document_transformer(category1)
-    cat2 = document_transformer(category2)
+    cat1 = document_transformer(document_collection_category1)
+    cat2 = document_transformer(document_collection_category2)
 
     documents = cat1 + cat2
-    vectorizer = TfidfVectorizer(max_df=0.5, min_df=2, stop_words="english",   use_idf=True)
+    vectorizer = TfidfVectorizer(max_df=0.5, min_df=2, use_idf=True)
 
     documents_tfidf = vectorizer.fit_transform(documents)
 
 
     feat_names = vectorizer.get_feature_names()
 
-
+    #singular value decomposition 
     lsa = TruncatedSVD(100)
-
     documents_lsa = lsa.fit_transform(documents_tfidf)
 
     values_list = []
@@ -248,7 +246,7 @@ def latent_semantic_analysis (category1, category2, list_size = 10 , visualize =
         if visualize == True:
             word.reverse()
             value.reverse()
-            positions = arange(list_size) + .5 # the bar centers on the y axis
+            positions = arange(list_size) + .5 
             figure(category)
             barh(positions, value, align='center')
             yticks(positions, word)

@@ -9,11 +9,11 @@ import pandas as pd
 
 
 
-def term_frequency (document, index_of_document = None, specific_word = None, scaled = False): 
-    """ Calculate term frequency in each document of the document collection 
+def term_frequency (document_collection, index_of_document = None, specific_word = None, scaled = False): 
+    """This method calculates term frequency in each document of the document collection 
     Args:
-        document (str, list of strings or file directory): document collection 						
-        indexOfDocument(int):  (default None) index of the document whose vector is to be returned
+        document_collection (str, list of strings or file directory): document collection 						
+        index_of_document(int):  (default None) index of the document whose vector is to be returned
 		specific_word(str): (default None) word whose vector is to be returned
 		scaled(bool):  (default False) True, if scaling relative to the frequency of words in the document is needed
     Returns:
@@ -21,7 +21,7 @@ def term_frequency (document, index_of_document = None, specific_word = None, sc
         pandas.core.series.Series: tf representation of the selected document or word
     """   
     vectorizer = CountVectorizer()
-    full_document = document_transformer(document)
+    full_document = document_transformer(document_collection)
 
     termFrequency = vectorizer.fit_transform(full_document).toarray()
     vocabulary = vectorizer.get_feature_names() 
@@ -36,10 +36,10 @@ def term_frequency (document, index_of_document = None, specific_word = None, sc
     else:
         return term_frequency_df
 
-def inverse_document_frequency ( document , smooth = True, specific_word = None):
-    """Calculate idf-weights for each term in the document collection
+def inverse_document_frequency (document_collection , smooth = True, specific_word = None):
+    """This method calculates idf-weights for each term in the document collection
     Args:
-        document(str, list or file directory): document collection					
+        document_collection (str, list or file directory): document collection					
         smooth(bool): (default True) add one to document frequencies and prevents zero divisions
 		specific_word(str): (default None) word whose idf-weight is to be returned
     Returns: 
@@ -47,7 +47,7 @@ def inverse_document_frequency ( document , smooth = True, specific_word = None)
 		pandas.core.series.Series: idf-weight of selected word
     """   
     vectorizer = CountVectorizer()
-    full_document = document_transformer(document)
+    full_document = document_transformer(document_collection)
 
     termFrequency = vectorizer.fit_transform(full_document).toarray()
     transformer = TfidfTransformer(smooth_idf=smooth)
@@ -63,10 +63,10 @@ def inverse_document_frequency ( document , smooth = True, specific_word = None)
         return idf_values_df
 
 
-def tfidf ( document, smooth = True, index_of_document = None):
-    """Calculate tf-idf weights for each term in the document collection  
+def tfidf (document_collection, smooth = True, index_of_document = None):
+    """This method calculates tf-idf weights for each term in the document collection  
     Args:
-        document (str, list or file directory): document collection
+        document_collection (str, list or file directory): document collection
 		smooth(bool): (default True) add one to document frequencies and prevents zero divisions
 		indexOfDocument(int): (default None) index of the document whose vector is to be returned
     Returns:
@@ -74,7 +74,7 @@ def tfidf ( document, smooth = True, index_of_document = None):
 		pandas.core.series.Series: tf-idf representation of selected document
     """   
     vectorizer = CountVectorizer()
-    full_document = document_transformer(document)
+    full_document = document_transformer(document_collection)
 
     termFrequency = vectorizer.fit_transform(full_document).toarray()
     transformer = TfidfTransformer(smooth_idf=smooth)
@@ -87,8 +87,8 @@ def tfidf ( document, smooth = True, index_of_document = None):
     else: 
         return tfidf_df
     
-def scale ( termFrequency  ) :
-    """Scale tf-representation of the document colletion relative to the frequency of words in the document
+def scale (termFrequency) :
+    """This method scales tf-representation of the document colletion relative to the frequency of words in the document
     Args:
         termFrequency(numpy.ndarray): tf representation of the document colleciton
     Returns:

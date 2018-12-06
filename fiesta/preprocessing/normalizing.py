@@ -10,17 +10,17 @@ import pickle
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
 from fiesta.external_packages.germalemma.germalemma import GermaLemma
 
-def stop_words (document, language = "en", user_definded_stop_word_list = None, punctuation = True):
-    """Remove stop words which do not contribute to any future operations.
+def stop_words (document_collection, language = "en", user_definded_stop_word_list = None, punctuation = True):
+    """This method removes stop words which do not contribute to any future operations.
         Args:
-            document(str, list or file directory): document collection
+            document_collection (str, list or file directory): document collection where stop words are to be removed 
  			language (str): (default „en“)  if "en": a pre-defened set of english stop words will be used
                                             if "de": a pre-defened set of german stop words will be used
-			user_defined_stop_word_list: (default None) a user defined set of stop words will be used
-			punctuation(bool): (default True) special characters will be removed
+			user_defined_stop_word_list (list): (default None) a user defined set of stop words will be used
+			punctuation (bool): (default True) special characters will be removed
         Returns: 
             str: String without stop words
-            list: list of strings without stop words
+            list: list of documents without stop words
     """
     stop_word_list = []
     if user_definded_stop_word_list != None:
@@ -30,7 +30,7 @@ def stop_words (document, language = "en", user_definded_stop_word_list = None, 
     elif language == "de":
         stop_word_list = set (stopwords.words ('german'))     
 
-    full_document = document_transformer(document)   
+    full_document = document_transformer(document_collection)   
     documents_without_stopwords = []
 
     for document_part in full_document:
@@ -48,16 +48,15 @@ def stop_words (document, language = "en", user_definded_stop_word_list = None, 
 
     return documents_without_stopwords    
 
-def pos_tagging(document, language = "en"):
-    """Determine the part of speech of each word.
+def pos_tagging(document_collection, language = "en"):
+    """This method determines the part of speech of each word.
         Args:
-            document(str, list or file directory): document collection
-			language(str): (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 
+            document_collection (str, list or file directory): document collection
+			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 
         Returns:   
             list: list of assigned part-of-speech-tags for each word in form (term, part-of-speech-tag)
     """
-
-    transformed_document = document_transformer(document)
+    transformed_document = document_transformer(document_collection)
     documents_pos_tag = []
 
     if language == "en":
@@ -82,17 +81,16 @@ def pos_tagging(document, language = "en"):
                 documents_pos_tag.append(tagger.tag(document_part.split()))
             return documents_pos_tag 
 
-def lemmatizer (document, language = "en"):
-    """Reduce each word to their word stem or dictionary form.
+def lemmatizer (document_collection, language = "en"):
+    """This method reduces each word to their word stem or dictionary form.
         Args:
-            document(str, list or file directory): document collection
-			language = "en": (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 	
+            document_collection (str, list or file directory): document collection
+			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 	
         Returns:
             str: string with lemmatized words
             list: list of strings with lemmatized words
     """
-
-    transformed_document = document_transformer (document) #aus einem File/List/String wird List mit Strings gemacht 
+    transformed_document = document_transformer (document_collection) #aus einem File/List/String wird List mit Strings gemacht 
     total_lemmatized_document = [] #neuer List mit lemmatizierten Dokumenten
     
     if language == "en": #für englisch
@@ -132,11 +130,11 @@ def lemmatizer (document, language = "en"):
 
         return total_lemmatized_document
             
-def stemming (document, language = "en"):
-    """Reduce each word to their word stem or root form.
+def stemming (document_collection, language = "en"):
+    """This method reduces each word to their word stem or root form.
         Args:
-            document(str, list or file directory): document collection
-			language = "en": (default „en“) „en“ - english; „de“ - german: for which language the method is to be executed 	
+            document_collection (str, list or file directory): document collection
+			language (str): (default „en“) „en“ for english; „de“ for german: for which language the method is to be executed 	
         Returns:
             str: string with stemmed words
             list: list of strings with stemmed words
@@ -147,11 +145,11 @@ def stemming (document, language = "en"):
     elif language == "de": 
         stemmer = SnowballStemmer("german")
 
-    if type(document) == list:
+    if type(document_collection) == list:
     
         stemmed_documents = []
 
-        for document_part in document:
+        for document_part in document_collection:
             document_tokens = word_tokenize(document_part)
             stemmed_document = ""
             for word in document_tokens:
@@ -161,9 +159,9 @@ def stemming (document, language = "en"):
 
         return stemmed_documents
 
-    elif isfile(document):
+    elif isfile(document_collection):
         full_document = []    
-        document = open(document, "r")
+        document = open(document_collection, "r")
         full_document = document.read().split('\n')
         document.close()  
         
@@ -179,7 +177,7 @@ def stemming (document, language = "en"):
         return stemmed_documents
 
 
-    elif type(document) == str:
+    elif type(document_collection) == str:
         document_tokens = word_tokenize(document)
         stemmed_document = ""
         for word in document_tokens:
