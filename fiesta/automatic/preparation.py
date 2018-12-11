@@ -66,7 +66,6 @@ def extract_relevant_features(document_collection_cat1, document_collection_cat2
             pandas.core.frame.DataFrame: relevant features for two preprocessed document collections selected with all five methods 
             of the feature_selection module    
     """
-    print (type(document_collection_cat2))
     extracted_features_cat1 = extract_features(document_collection_cat1, language_of_documents=language_of_document_collection, preprocessing_only=True )
     extracted_features_cat2 = None
     if document_collection_cat2 != None:
