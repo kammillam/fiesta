@@ -22,6 +22,7 @@ setup(name='fiesta',
       ],
       dependency_links=[
             'https://github.com/WZBSocialScienceCenter/germalemma.git'
+            'https://github.com/ptnplanet/NLTK-Contributions/tree/master/ClassifierBasedGermanTagger'
         ],
 
       zip_safe=False)
