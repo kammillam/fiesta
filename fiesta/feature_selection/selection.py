@@ -24,8 +24,8 @@ def term_frequency_selection(document_collection_category1, document_collection_
             pandas.core.series.Series: most relevant features and their frequency in all documents           
     """
     cat1 = document_transformer(document_collection_category1)
-    if category2 != None:
-        cat2 = document_transformer(category2)
+    if document_collection_category2 != None:
+        cat2 = document_transformer(document_collection_category2)
         full_document = cat1+cat2
 
     else:
@@ -49,7 +49,7 @@ def tfidf_selection (document_collection_category1, document_collection_category
             pandas.core.series.Series: most relevant features and sum of their Tf-idf weights in all documents            
     """
     cat1 = document_transformer(document_collection_category1)
-    if category2 != None:
+    if document_collection_category2 != None:
         cat2 = document_transformer(document_collection_category2)
         full_document = cat1+cat2
 
@@ -122,8 +122,6 @@ def information_gain(document_collection_category1, document_collection_category
     
     else:
         while len(result_ig) < size:
-            print ( len(result_ig))
-            print (result_ig)
             max_key = max(ig, key=ig.get)
             max_value = ig[max_key]
             result_ig [max_key] = max_value
@@ -221,7 +219,7 @@ def latent_semantic_analysis (document_collection_category1, document_collection
     cat2 = document_transformer(document_collection_category2)
 
     documents = cat1 + cat2
-    vectorizer = TfidfVectorizer(max_df=0.5, min_df=2, use_idf=True)
+    vectorizer = TfidfVectorizer(use_idf=True)
 
     documents_tfidf = vectorizer.fit_transform(documents)
 
