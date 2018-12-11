@@ -12,7 +12,8 @@ setup(name='fiesta',
                 'fiesta.preprocessing',
                 'fiesta.feature_extraction',
                 'fiesta.feature_selection',
-                'fiesta.transformers'],
+                'fiesta.transformers',
+                'fiesta.external_packages'],
       install_requires=[
           'scikit-learn',
           'pandas',
@@ -21,8 +22,6 @@ setup(name='fiesta',
           'pyphen'
       ],
       dependency_links=[
-            'https://github.com/WZBSocialScienceCenter/germalemma.git'
-            'https://github.com/ptnplanet/NLTK-Contributions/tree/master/ClassifierBasedGermanTagger'
-        ],
+            ],
 
       zip_safe=False)
