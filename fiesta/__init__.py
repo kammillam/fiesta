@@ -3,5 +3,4 @@ from fiesta.preprocessing import tokenization, n_grams_tokenization, stemming, s
 from fiesta.feature_extraction import bag_of_words, words_counting, term_frequency, inverse_document_frequency, tfidf
 from fiesta.feature_selection import term_frequency_selection, tfidf_selection, information_gain, chi_square, latent_semantic_analysis
 from fiesta.transformers import document_transformer
-from fiesta.external_packages.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
 from fiesta.external_packages.germalemma import GermaLemma

@@ -13,8 +13,10 @@ setup(name='fiesta',
                 'fiesta.feature_extraction',
                 'fiesta.feature_selection',
                 'fiesta.transformers',
-                'fiesta.external_packages.germalemma',
-                'fiesta.external_packages.ClassifierBasedGermanTagger'],
+                'fiesta.external_packages.germalemma'
+                ],
+      package_data  = {'' : ['data/lemmata.pickle'] },
+      include_package_data = True,
       install_requires=[
           'scikit-learn',
           'pandas',
@@ -22,7 +24,6 @@ setup(name='fiesta',
           'nltk',
           'pyphen'
       ],
-      dependency_links=[
-            ],
+      dependency_links=[ ],
 
       zip_safe=False)

@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from os.path import isfile
 from nltk import pos_tag, word_tokenize
 from fiesta.transformers.document_transformer import document_transformer
-from fiesta.external_packages.ClassifierBasedGermanTagger.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
+from ClassifierBasedGermanTagger.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
 import pickle
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
 from fiesta.external_packages.germalemma.germalemma import GermaLemma
