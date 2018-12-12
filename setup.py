@@ -15,8 +15,7 @@ setup(name='fiesta',
                 'fiesta.transformers',
                 'fiesta.external_packages.germalemma'
                 ],
-      package_data  = {'' : ['data/lemmata.pickle'] },
-      include_package_data = True,
+    
       install_requires=[
           'scikit-learn',
           'pandas',
